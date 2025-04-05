@@ -60,131 +60,159 @@ A **FastAPI-based application** for managing document uploads, OCR processing, G
 ```bash
 git clone https://github.com/yourusername/document-management-api.git
 cd document-management-api
-2. Set Up a Virtual Environment
-bash
-Copy
-Edit
+```
+
+### 2. Set Up a Virtual Environment
+
+```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-3. Install Dependencies
-bash
-Copy
-Edit
+```
+
+### 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
-Create a requirements.txt with packages like fastapi, sqlalchemy, pytesseract, celery, minio, authlib, python-jose, python-dotenv, spacy, etc.
+```
 
-4. Install Tesseract OCR
-Ubuntu:
+> Create a `requirements.txt` with packages like `fastapi`, `sqlalchemy`, `pytesseract`, `celery`, `minio`, `authlib`, `python-jose`, `python-dotenv`, `spacy`, etc.
 
-bash
-Copy
-Edit
-sudo apt install tesseract-ocr
-macOS:
+### 4. Install Tesseract OCR
 
-bash
-Copy
-Edit
-brew install tesseract
-Windows:
-Install from the official Tesseract website and add to your system PATH.
+- **Ubuntu:**  
+  ```bash
+  sudo apt install tesseract-ocr
+  ```
 
-5. Download SpaCy Model
-bash
-Copy
-Edit
+- **macOS:**  
+  ```bash
+  brew install tesseract
+  ```
+
+- **Windows:**  
+  Install from the [official Tesseract website](https://github.com/tesseract-ocr/tesseract) and add to your system PATH.
+
+### 5. Download SpaCy Model
+
+```bash
 python -m spacy download en_core_web_sm
-🔧 Configuration
-Create a .env file in the project root with the following:
+```
 
-env
-Copy
-Edit
+---
+
+## 🔧 Configuration
+
+Create a `.env` file in the project root with the following:
+
+```env
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 SECRET_KEY=your-secret-key
 JWT_SECRET_KEY=your-jwt-secret-key
 URL=sqlite:////path/to/your/database.db  # Or use PostgreSQL
-MinIO Setup (via Docker)
-bash
-Copy
-Edit
+```
+
+### MinIO Setup (via Docker)
+
+```bash
 docker run -p 9000:9000 --name minio \
 -e "MINIO_ROOT_USER=minioadmin" \
 -e "MINIO_ROOT_PASSWORD=minioadmin" \
 minio/minio server /data
-Update minio_upload.py if you're using different credentials or endpoint.
+```
 
-RabbitMQ Setup (via Docker)
-bash
-Copy
-Edit
+> Update `minio_upload.py` if you're using different credentials or endpoint.
+
+### RabbitMQ Setup (via Docker)
+
+```bash
 docker run -d -p 5672:5672 rabbitmq:3
-🏃 Running the Application
-1. Start the FastAPI Server
-bash
-Copy
-Edit
+```
+
+---
+
+## 🏃‍ Running the Application
+
+### 1. Start the FastAPI Server
+
+```bash
 uvicorn main:app --reload --host 127.0.0.1 --port 8000
-2. Start the Celery Worker
+```
+
+### 2. Start the Celery Worker
+
 Open another terminal and run:
 
-bash
-Copy
-Edit
+```bash
 celery -A celery worker --loglevel=info
-3. Access the API
-Visit: http://127.0.0.1:8000/docs for Swagger UI
+```
 
-📡 API Endpoints
-🔐 Authentication
-Method	Endpoint	Description
-GET	/login	Redirect to Google OAuth
-GET	/auth	Handle OAuth callback
-GET	/logout	Logout and clear session
-📁 Document Management
-Method	Endpoint	Description
-POST	/Uplode_Document/	Upload a document (requires account or manager)
-GET	/get_files	Retrieve documents (filtered by role)
-GET	/searech_file/	Full-text search on OCR text
-DELETE	/Delete_Document/	Delete a document (manager only)
-👥 User Management
-Method	Endpoint	Description
-GET	/Get_ALL_USER_DATA	Fetch all user data (admin/manager access)
-PUT	/give_role/	Assign a role to a user
-🤝 Contributing
-Fork the repository.
+### 3. Access the API
 
-Create a feature branch:
+Visit: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) for Swagger UI
 
-bash
-Copy
-Edit
-git checkout -b feature/your-feature
-Commit your changes:
+---
 
-bash
-Copy
-Edit
-git commit -m "Add your feature"
-Push to the branch:
+## 📡 API Endpoints
 
-bash
-Copy
-Edit
-git push origin feature/your-feature
-Open a pull request.
+### 🔐 Authentication
 
-📄 License
-This project is licensed under the MIT License – see the LICENSE file for details.
+| Method | Endpoint         | Description                                |
+|--------|------------------|--------------------------------------------|
+| GET    | `/login`         | Redirect to Google OAuth                   |
+| GET    | `/auth`          | Handle OAuth callback                      |
+| GET    | `/logout`        | Logout and clear session                   |
 
-📝 Notes
-Replace yourusername in the clone URL with your actual GitHub username.
+### 📁 Document Management
 
-Ensure requirements.txt includes all necessary packages.
+| Method | Endpoint               | Description                                         |
+|--------|------------------------|-----------------------------------------------------|
+| POST   | `/Uplode_Document/`    | Upload a document (requires `account` or `manager`)|
+| GET    | `/get_files`           | Retrieve documents (filtered by role)              |
+| GET    | `/searech_file/`       | Full-text search on OCR text                       |
+| DELETE | `/Delete_Document/`    | Delete a document (manager only)                   |
 
-Adjust database path in .env based on your system.
+### 👥 User Management
 
-For PostgreSQL, make sure the database is created and accessible.
+| Method | Endpoint            | Description                                |
+|--------|---------------------|--------------------------------------------|
+| GET    | `/Get_ALL_USER_DATA`| Fetch all user data (admin/manager access) |
+| PUT    | `/give_role/`       | Assign a role to a user                    |
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository.
+2. Create a feature branch:  
+   ```bash
+   git checkout -b feature/your-feature
+   ```
+3. Commit your changes:  
+   ```bash
+   git commit -m "Add your feature"
+   ```
+4. Push to the branch:  
+   ```bash
+   git push origin feature/your-feature
+   ```
+5. Open a pull request.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** – see the `LICENSE` file for details.
+
+---
+
+## 📝 Notes
+
+- Replace `yourusername` in the clone URL with your actual GitHub username.
+- Ensure `requirements.txt` includes all necessary packages.
+- Adjust database path in `.env` based on your system.
+- For PostgreSQL, make sure the database is created and accessible.
+
+---
 
 Built with ❤️ using FastAPI, Celery, MinIO, and OCR tech.
